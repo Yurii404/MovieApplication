@@ -1,0 +1,30 @@
+<div class="container-fluid">
+    <div class="row">
+        <div class="row-md-2">
+            <!--Sidebar content-->
+
+            <p>
+                Search:
+                <input ng-model="$ctrl.query"/>
+            </p>
+
+
+        </div>
+        <div class="col-md-10">
+            <!--Body content-->
+            <h2 align="center" >Movie rooms:</h2>
+            <ul class="cinemas">
+                <li ng-repeat="movieSession in $ctrl.movieSessions | filter:$ctrl.query | filter: {movieRoomId: $ctrl.roomId}" class="thumbnail">
+                    <a href="#!/movieSession/{{movieSession.id}}" class="thumb">
+                        <img ng-src="{{'img/movie.jpg'}}" alt="{{movieSession.nameOfMovie}}"/>
+                    </a>
+                    <a href="#!/movieSession/{{movieSession.id}}">{{movieSession.nameOfMovie}}</a>
+                    <h6 >Price: {{movieSession.price}}</h6>
+                    <h6 >Datetime: {{$ctrl.toPretty(movieSession.dateTime)}}</h6>
+                    <h6 >Num of tickets: {{movieSession.numOfTickets}}</h6>
+                </li>
+            </ul>
+
+        </div>
+    </div>
+</div>

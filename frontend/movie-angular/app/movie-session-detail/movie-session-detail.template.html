@@ -1,0 +1,18 @@
+
+
+<div>
+    <img ng-src="{{'img/movie.jpg'}}" class="session-detail-img"/>
+</div>
+
+<h1 align="center">{{$ctrl.movieSession.nameOfMovie}}</h1>
+<div>
+    <h2>Description: </h2>
+    <h4>Price: {{$ctrl.movieSession.price}}</h4>
+    <h4>Num of tickets: {{$ctrl.movieSession.numOfTickets}} </h4>
+    <h4>Datetime of start: {{$ctrl.movieSession.dateTime | date : "dd.MM.y"}}</h4>
+</div>
+
+<div align="center">
+    <button class="registerbtn" ng-click="$ctrl.buyTicket()">Buy ticket</button>
+</div>
+

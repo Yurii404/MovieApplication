@@ -1,0 +1,25 @@
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-md-10">
+
+            <div class="container">
+                <h1>Login</h1>
+                <p>Please fill in this form to enter in your account.</p>
+                <hr>
+
+                <label for="username"><b>Username</b></label>
+                <input class="input-style" type="text" placeholder="Enter Username" id="username" ng-model="$ctrl.user.username"  required>
+
+                <label for="password"><b>Password</b></label>
+                <input class="input-style" type="password" placeholder="Enter Password"  id="password" ng-model="$ctrl.user.password" required>
+
+
+                <hr>
+
+                <button type="submit" ng-click="$ctrl.login($ctrl.user)" class="registerbtn">Login</button>
+            </div>
+
+
+        </div>
+    </div>
+</div>

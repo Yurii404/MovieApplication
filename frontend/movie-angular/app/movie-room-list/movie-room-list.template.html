@@ -1,0 +1,29 @@
+<div class="container-fluid">
+  <div class="row">
+    <div class="row-md-2">
+      <!--Sidebar content-->
+
+      <p>
+        Search:
+        <input ng-model="$ctrl.query"/>
+      </p>
+
+
+    </div>
+    <div class="col-md-10">
+      <!--Body content-->
+      <h2 align="center" >Movie rooms:</h2>
+      <ul class="cinemas">
+        <li ng-repeat="movieRoom in $ctrl.movieRooms | filter:$ctrl.query | filter: {cinemaId: $ctrl.cinemaId}" class="thumbnail">
+          <a href="#!/movieRoom/{{movieRoom.id}}" class="thumb">
+            <img ng-src="{{'img/room.jpg'}}" alt="{{movieRoom.roomName}}"/>
+          </a>
+          <a href="#!/movieRoom/{{movieRoom.id}}">{{movieRoom.roomName}}</a>
+          <h6 >Room number: {{movieRoom.roomNumber}}</h6>
+          <h6 >Num of seats: {{movieRoom.numOfSeats}}</h6>
+        </li>
+      </ul>
+
+    </div>
+  </div>
+</div>

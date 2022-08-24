@@ -1,0 +1,27 @@
+<div class="container-fluid">
+    <div class="row">
+        <div class="row-md-2">
+            <!--Sidebar content-->
+
+            <p>
+                Search:
+                <input ng-model="$ctrl.query"/>
+            </p>
+
+
+        </div>
+        <div class="col-md-10">
+            <!--Body content-->
+            <h2 align="center" >Cinemas:</h2>
+            <ul class="cinemas">
+                <li ng-repeat="cinema in $ctrl.cinemas | filter:$ctrl.query " class="thumbnail">
+                    <a href="#!/cinema/{{cinema.id}}" class="thumb">
+                        <img ng-src="{{'img/cinema.jpg'}}" alt="{{cinema.name}}"/>
+                    </a>
+                    <a href="#!/cinema/{{cinema.id}}">{{cinema.name}}</a>
+                </li>
+            </ul>
+
+        </div>
+    </div>
+</div>

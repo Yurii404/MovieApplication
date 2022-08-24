@@ -1,0 +1,111 @@
+--liquibase formatted sql
+--changeset yurii:1
+
+DROP TABLE IF EXISTS "user" CASCADE;
+DROP TABLE IF EXISTS "movie_room" CASCADE;
+DROP TABLE IF EXISTS "ticket" CASCADE;
+DROP TABLE IF EXISTS "movie_session" CASCADE;
+DROP TABLE IF EXISTS "roles" CASCADE;
+DROP TABLE IF EXISTS "cinema" CASCADE;
+DROP TABLE IF EXISTS "audit_log_method_invocation" CASCADE;
+
+DROP SEQUENCE IF EXISTS `TICKET_SEQUENCE`;
+DROP SEQUENCE IF EXISTS `USER_SEQUENCE`;
+DROP SEQUENCE IF EXISTS `MOVIE_ROOM_SEQUENCE`;
+DROP SEQUENCE IF EXISTS `MOVIE_SESSION_SEQUENCE`;
+DROP SEQUENCE IF EXISTS `ROLE_SEQUENCE`;
+DROP SEQUENCE IF EXISTS `CINEMA_SEQUENCE`;
+DROP SEQUENCE IF EXISTS `AUDIT_SEQUENCE`;
+
+
+CREATE SEQUENCE `TICKET_SEQUENCE` START WITH 5 INCREMENT BY 1;
+CREATE SEQUENCE `CINEMA_SEQUENCE` START WITH 3 INCREMENT BY 1;
+CREATE SEQUENCE `MOVIE_ROOM_SEQUENCE` START WITH 5 INCREMENT BY 1;
+CREATE SEQUENCE `USER_SEQUENCE` START WITH 5 INCREMENT BY 1;
+CREATE SEQUENCE `MOVIE_SESSION_SEQUENCE` START WITH 5 INCREMENT BY 1;
+CREATE SEQUENCE `ROLE_SEQUENCE` START WITH 3 INCREMENT BY 1;
+CREATE SEQUENCE `AUDIT_SEQUENCE` START WITH 1 INCREMENT BY 1;
+
+CREATE TABLE "audit_log_method_invocation"
+(
+    id               INT,
+    method_name      VARCHAR(300) NOT NULL,
+    arguments        VARCHAR(500),
+    return_value     VARCHAR(500),
+    thrown_exception VARCHAR(500),
+    invocation_time  TIMESTAMP    NOT NULL,
+
+    CONSTRAINT PK_AUDIT_LOG_METHOD_INVOCATION_ID PRIMARY KEY (id)
+);
+
+CREATE TABLE "roles"
+(
+    id        INT,
+    role_name VARCHAR(100) NOT NULL,
+
+    CONSTRAINT PK_ROLE_ID PRIMARY KEY (id)
+);
+
+CREATE TABLE "user"
+(
+    id               INT,
+    user_username    VARCHAR(50)  NOT NULL UNIQUE,
+    user_password    VARCHAR(150) NOT NULL,
+    user_email       VARCHAR(100) NOT NULL UNIQUE,
+    user_firstname   VARCHAR(50)  NOT NULL,
+    user_second_name VARCHAR(50)  NOT NULL,
+    user_phone       VARCHAR(50)  NOT NULL,
+    role_id          INT          NOT NULL,
+
+    CONSTRAINT FK_USER_ROLE_ID FOREIGN KEY (role_id) REFERENCES "roles" (id),
+    CONSTRAINT PK_USER_ID PRIMARY KEY (id)
+);
+
+CREATE TABLE "cinema"
+(
+    id            INT,
+    cinema_name   VARCHAR(150) NOT NULL UNIQUE,
+    user_admin_id INT,
+
+    CONSTRAINT FK_CINEMA_USER_ADMIN_ID FOREIGN KEY (user_admin_id) REFERENCES "user" (id),
+    CONSTRAINT PK_CINEMA_ID PRIMARY KEY (id)
+);
+
+CREATE TABLE "movie_room"
+(
+    id           INT,
+    room_name    VARCHAR(50) UNIQUE NOT NULL,
+    room_number  INT UNIQUE         NOT NULL,
+    num_of_seats INT                NOT NULL,
+    cinema_id    INT                NOT NULL,
+
+    CONSTRAINT FK_MOVIE_ROOM_CINEMA_ID FOREIGN KEY (cinema_id) REFERENCES "cinema" (id),
+    CONSTRAINT PK_MOVIE_ROOM_ID PRIMARY KEY (id)
+);
+
+CREATE TABLE "movie_session"
+(
+    id                INT,
+    movie_name        VARCHAR(100) NOT NULL,
+    movie_room_id     INT          NOT NULL,
+    price             INT          NOT NULL,
+    date_time         TIMESTAMP    NOT NULL,
+    remaining_tickets INT          NOT NULL,
+
+    CONSTRAINT FK_MOVIE_SESSION_MOVIE_ROOM_ID FOREIGN KEY (movie_room_id) REFERENCES "movie_room" (id),
+    CONSTRAINT PK_MOVIE_SESSION_ID PRIMARY KEY (id)
+);
+
+CREATE TABLE "ticket"
+(
+    id         INT,
+    user_id    INT NOT NULL,
+    session_id INT NOT NULL,
+
+    CONSTRAINT FK_TICKET_USER_ID FOREIGN KEY (user_id) REFERENCES "user" (id),
+    CONSTRAINT FK_TICKET_SESSION_ID FOREIGN KEY (session_id) REFERENCES "movie_session" (id),
+    CONSTRAINT PK_TICKET_ID PRIMARY KEY (id)
+);
+
+
+
